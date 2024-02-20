@@ -3,7 +3,7 @@ import sqlite3
 banco = sqlite3.connect('loja_virtual.db')
 cursor = banco.cursor()
 
-# cursor.execute("CREATE TABLE produtos(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, valor INTEGER)")
+cursor.execute("CREATE TABLE produtos(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, valor INTEGER)")
 
 # CRIAR
 cursor.execute("INSERT INTO produtos VALUES('1','bOLO','25')")

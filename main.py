@@ -7,9 +7,36 @@ class Produto:
         self.nome = nome
         self.preco = preco
         
-class Funcao:
+class FuncaoCrud:
     def __init__(self):
-        self.produto = []
+        self.produtos = []
         
     def criar_produto(self,id,nome,preco):
         
+        produto = Produto()
+        self.produto.append()
+        return produto
+    
+    def listar_produto(self):
+        
+        return self.produtos 
+     
+    def buscar_produto(self, id):
+         
+         for produto in self.produtos:
+            if produto.id == id:
+                return produto
+         return None
+    
+    def alterar_produto(self,id,nome,preco):
+        
+        produto = self.buscar_produto(id)
+        if produto:
+            produto.nome = nome
+            produto.preco = preco
+            return True
+        else:
+            
+            return False
+        
+    
