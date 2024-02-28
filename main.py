@@ -1,42 +1,34 @@
-from exercicio import CRUD
 
-class Produto:
-    def __init__(self,id,nome,preco):
+import sqlite3
+
+class Dbprodutos:
+
+    def __init__(self, nome_banco='loja_virtual5.db'):
         
-        self.id = id
-        self.nome = nome
-        self.preco = preco
+        self.nome_banco = nome_banco
         
-class FuncaoCrud:
-    def __init__(self):
-        self.produtos = []
+    def conectar(self):
         
-    def criar_produto(self,id,nome,preco):
+        self.conexao = sqlite3.connect(self.nome_banco)
+        self.cursor = self.conexao.cursor()
         
-        produto = Produto()
-        self.produto.append()
-        return produto
+    def desconectar(self):
+        
+        self.conexao.close()
     
-    def listar_produto(self):
+    def criar_tb(self):
         
-        return self.produtos 
-     
-    def buscar_produto(self, id):
-         
-         for produto in self.produtos:
-            if produto.id == id:
-                return produto
-         return None
+        self.conectar()
+        self.cursor.execute("CREATE TABLE produtos(id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, valor INTEGER)")
+
+        self.conexao.commit()
+        self.desconectar()
     
-    def alterar_produto(self,id,nome,preco):
+    
+teste = Dbprodutos()
+teste.criar_tb()
+  
         
-        produto = self.buscar_produto(id)
-        if produto:
-            produto.nome = nome
-            produto.preco = preco
-            return True
-        else:
-            
-            return False
+
         
     
