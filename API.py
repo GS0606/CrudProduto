@@ -8,20 +8,18 @@ def conectar_bd():
 
 @app.route('/produtos', methods=['GET'])
 def buscar_produtos():
-    conexao = conectar_bd()
-    cursor = conexao.cursor()
-    cursor.execute("SELECT * FROM produto")
-    produtos = cursor.fetchall()
-    conexao.close()
+    with conectar_bd() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM produto")
+        produtos = cursor.fetchall()
     return jsonify(produtos)
 
 @app.route('/produtos/<int:id>', methods=['GET'])
 def buscar_produto_por_id(id):
-    conexao = conectar_bd()
-    cursor = conexao.cursor()
-    cursor.execute("SELECT * FROM produto WHERE id=?", (id,))
-    produto = cursor.fetchone()
-    conexao.close()
+    with conectar_bd() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM produto WHERE id=?", (id,))
+        produto = cursor.fetchone()
     if produto:
         return jsonify(produto)
     else:
@@ -30,30 +28,27 @@ def buscar_produto_por_id(id):
 @app.route('/produtos', methods=['POST'])
 def inserir_produto():
     novo_produto = request.get_json()
-    conexao = conectar_bd()
-    cursor = conexao.cursor()
-    cursor.execute("INSERT INTO produto (nome, valor) VALUES (?, ?)", (novo_produto['nome'], novo_produto['valor']))
-    conexao.commit()
-    conexao.close()
+    with conectar_bd() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute("INSERT INTO produto (nome, valor) VALUES (?, ?)", (novo_produto['nome'], novo_produto['valor']))
+        conexao.commit()
     return jsonify({"mensagem": "Produto inserido com sucesso"})
 
 @app.route('/produtos/<int:id>', methods=['PUT'])
 def editar_produto(id):
     produto_alterado = request.get_json()
-    conexao = conectar_bd()
-    cursor = conexao.cursor()
-    cursor.execute("UPDATE produto SET nome=?, valor=? WHERE id=?", (produto_alterado['nome'], produto_alterado['valor'], id))
-    conexao.commit()
-    conexao.close()
+    with conectar_bd() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute("UPDATE produto SET nome=?, valor=? WHERE id=?", (produto_alterado['nome'], produto_alterado['valor'], id))
+        conexao.commit()
     return jsonify({"mensagem": "Produto atualizado com sucesso"})
 
 @app.route('/produtos/<int:id>', methods=['DELETE'])
 def excluir_produto(id):
-    conexao = conectar_bd()
-    cursor = conexao.cursor()
-    cursor.execute("DELETE FROM produto WHERE id=?", (id,))
-    conexao.commit()
-    conexao.close()
+    with conectar_bd() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute("DELETE FROM produto WHERE id=?", (id,))
+        conexao.commit()
     return jsonify({"mensagem": "Produto excluído com sucesso"})
 
 if __name__ == '__main__':
